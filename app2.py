@@ -23,9 +23,9 @@ import math
 from matplotlib.dates import DateFormatter
 
 start = '2010-01-01'
-end = '2024-04-01'
+end = '2019-12-31'
 
-st.title("Stock Trend Prediction(Arima including Covid data)")
+st.title("Stock Trend Prediction (Arima excluding Covid Data)")
 
 
 user_input = st.text_input('Enter Stock Ticker')
@@ -33,11 +33,11 @@ user_input = st.text_input('Enter Stock Ticker')
 # ticker_symbol = 'AAPL'  # Example: Apple Inc.
 
 # Fetch historical stock price data using yfinance
-stock_data = yf.download(user_input, start='2010-01-01', end='2024-04-01')
+stock_data = yf.download(user_input, start='2010-01-01', end='2019-12-31')
 
 #describing data
 
-st.subheader('Data from 2010 - 2024')
+st.subheader('Data from 2010 - 2019')
 st.write(stock_data.describe())
 
 #visualizations
@@ -79,7 +79,7 @@ result = model.fit()
 # print(result.summary())
 
 
-pred = result.forecast(1055, alpha=0.05)  # 95% conf
+pred = result.forecast(739, alpha=0.05)  # 95% conf
 
 pred = pred.to_frame()
 
@@ -106,13 +106,13 @@ mae = np.mean(np.abs(data_testing["predicted_mean"] - data_testing["Close"]))
 target_range = np.max(data_testing["Close"]) - np.min(data_testing["Close"])
 
 # Calculate the error percentage
-## error_percentage = (mae / target_range) * 100
+error_percentage = (mae / target_range) * 100
 
-error_percentage = (mae / np.mean(data_testing["Close"])) * 100
+# error_percentage = (mae / np.mean(data_testing["Close"])) * 100
 
 # Streamlit app
 st.subheader("Error Percentage Calculator")
 
 # Display the error percentage
-st.write(f"Mean Absoluter Error: {mae:.2f}")
+st.write(f"Mean Absolute Error: {mae:.2f}")
 st.write(f"Error Percentage: {error_percentage:.2f}%")
